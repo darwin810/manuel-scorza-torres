@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import Topbar from './Topbar';
 
 async function getUser() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const token = cookieStore.get('auth_token')?.value;
   if (!token) return null;
   try {

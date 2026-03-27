@@ -1,13 +1,26 @@
 'use client';
+import { useState } from 'react';
 import { deleteEnrollment } from './actions';
+import ConfirmModal from '../ConfirmModal';
 import Link from 'next/link';
 
 export default function EnrollmentsClient({ initialData }) {
-  const handleDelete = async (id) => {
-    if (confirm('Eliminar matrícula?')) {
-      await deleteEnrollment(id);
-      window.location.reload(); 
-    }
+  const [confirmConfig, setConfirmConfig] = useState({ isOpen: false });
+
+  const handleDelete = (id) => {
+    setConfirmConfig({
+      isOpen: true,
+      title: 'Cancelar Matrícula',
+      message: '¿Estás seguro de cancelar y eliminar esta matrícula? Esta acción es irreversible.',
+      isDanger: true,
+      confirmText: 'Sí, cancelar matrícula',
+      onConfirm: async () => {
+        setConfirmConfig({ isOpen: false });
+        await deleteEnrollment(id);
+        window.location.reload(); 
+      },
+      onCancel: () => setConfirmConfig({ isOpen: false })
+    });
   };
 
   return (
@@ -48,6 +61,7 @@ export default function EnrollmentsClient({ initialData }) {
           )}
         </tbody>
       </table>
+      <ConfirmModal {...confirmConfig} />
     </div>
   );
 }

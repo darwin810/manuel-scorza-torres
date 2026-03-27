@@ -4,7 +4,7 @@ import { query } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 
 export async function fetchStudentsData(filters) {
-  const { search, egresados, anio_id, grado_id, seccion_id, page = 1 } = filters;
+  const { search, egresados, anio_id, nivel_id, grado_id, seccion_id, page = 1 } = filters;
   const limit = 10;
   const offset = (page - 1) * limit;
 
@@ -23,13 +23,20 @@ export async function fetchStudentsData(filters) {
     paramIndex++;
   }
 
-  // To support anio_id, grado_id, seccion_id we would JOIN with matriculas
-  // Since we only query estudiantes for now, we'll keep it simple or implement the JOIN
-  if (anio_id || grado_id || seccion_id) {
-    baseQuery += ` AND id IN (SELECT estudiante_id FROM matriculas WHERE 1=1`;
-    if (anio_id) { baseQuery += ` AND anio_id = $${paramIndex++}`; queryParams.push(anio_id); }
-    if (grado_id) { baseQuery += ` AND grado_id = $${paramIndex++}`; queryParams.push(grado_id); }
-    if (seccion_id) { baseQuery += ` AND seccion_id = $${paramIndex++}`; queryParams.push(seccion_id); }
+  // To support anio_id, nivel_id, grado_id, seccion_id we would JOIN with matriculas
+  if (anio_id || nivel_id || grado_id || seccion_id) {
+    baseQuery += ` AND id IN (SELECT estudiante_id FROM matriculas m`;
+    if (nivel_id && !grado_id && !seccion_id) {
+       // Si filtra nivel pero no grado, requerimos JOIN con grados para encontrar el nivel
+       baseQuery += ` JOIN grados g ON m.grado_id = g.id WHERE 1=1`;
+    } else {
+       baseQuery += ` WHERE 1=1`;
+    }
+    
+    if (anio_id) { baseQuery += ` AND m.anio_id = $${paramIndex++}`; queryParams.push(anio_id); }
+    if (nivel_id && !grado_id && !seccion_id) { baseQuery += ` AND g.nivel_id = $${paramIndex++}`; queryParams.push(nivel_id); }
+    if (grado_id) { baseQuery += ` AND m.grado_id = $${paramIndex++}`; queryParams.push(grado_id); }
+    if (seccion_id) { baseQuery += ` AND m.seccion_id = $${paramIndex++}`; queryParams.push(seccion_id); }
     baseQuery += `)`;
   }
 
@@ -85,13 +92,15 @@ export async function fetchStudentsData(filters) {
 }
 
 export async function getFilterOptions() {
-  const [anios, grados, secciones] = await Promise.all([
+  const [anios, niveles, grados, secciones] = await Promise.all([
     query('SELECT * FROM anios_escolares ORDER BY anio DESC'),
+    query('SELECT * FROM niveles ORDER BY id ASC'),
     query('SELECT * FROM grados ORDER BY id ASC'),
     query('SELECT * FROM secciones ORDER BY id ASC')
   ]);
   return {
     anios: anios.rows,
+    niveles: niveles.rows,
     grados: grados.rows,
     secciones: secciones.rows
   };

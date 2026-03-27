@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { getLevels, getGradesByLevel, getSectionsByGrade, saveEnrollment } from '../actions';
 import { searchStudentByDni } from '../../students/actions';
+import AlertModal from '../../AlertModal';
 
 export default function CreateEnrollmentClient({ activeYear, levels }) {
   const router = useRouter();
@@ -25,6 +26,7 @@ export default function CreateEnrollmentClient({ activeYear, levels }) {
   const [selectedStudent, setSelectedStudent] = useState(null);
 
   const [errorMsg, setErrorMsg] = useState('');
+  const [alertConfig, setAlertConfig] = useState({ isOpen: false });
 
   const handleSearch = (e) => {
     const v = e.target.value;
@@ -79,7 +81,13 @@ export default function CreateEnrollmentClient({ activeYear, levels }) {
     e.preventDefault();
     setErrorMsg('');
     if (!formData.estudiante_id) {
-      alert("Debe buscar y seleccionar un estudiante para la matrícula.");
+      setAlertConfig({
+        isOpen: true,
+        title: 'Selección Necesaria',
+        message: 'Debe buscar y seleccionar un estudiante para proseguir con el registro de la matrícula.',
+        isDanger: true,
+        onOk: () => setAlertConfig({ isOpen: false })
+      });
       return;
     }
     
@@ -180,6 +188,7 @@ export default function CreateEnrollmentClient({ activeYear, levels }) {
           </button>
         </div>
       </form>
+      <AlertModal {...alertConfig} />
     </div>
   );
 }

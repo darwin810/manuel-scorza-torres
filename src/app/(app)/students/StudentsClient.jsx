@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { getStudents, searchStudentByDni, saveStudent, deleteStudent } from './actions';
+import ConfirmModal from '../ConfirmModal';
 
 export default function StudentsClient({ initialStudents }) {
   const [students, setStudents] = useState(initialStudents);
@@ -14,6 +15,7 @@ export default function StudentsClient({ initialStudents }) {
   });
   const [isTab, setIsTab] = useState('student'); // student, parents, additional
   const [toastMessage, setToastMessage] = useState('');
+  const [confirmConfig, setConfirmConfig] = useState({ isOpen: false });
 
   const showToast = (msg) => {
     setToastMessage(msg);
@@ -52,12 +54,21 @@ export default function StudentsClient({ initialStudents }) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleDelete = async (id) => {
-    if (confirm('¿Estás seguro de eliminar este estudiante? Se eliminarán también matrículas y vínculos asociados.')) {
-      await deleteStudent(id);
-      showToast('Estudiante eliminado.');
-      setStudents(await getStudents());
-    }
+  const handleDelete = (id) => {
+    setConfirmConfig({
+      isOpen: true,
+      title: 'Eliminar Estudiante',
+      message: '¿Estás seguro de eliminar este estudiante? Se eliminarán también matrículas y vínculos asociados irreversiblemente.',
+      isDanger: true,
+      confirmText: 'Sí, eliminar',
+      onConfirm: async () => {
+        setConfirmConfig({ isOpen: false });
+        await deleteStudent(id);
+        showToast('Estudiante eliminado.');
+        setStudents(await getStudents());
+      },
+      onCancel: () => setConfirmConfig({ isOpen: false })
+    });
   };
 
   const handleClear = () => {
@@ -222,6 +233,7 @@ export default function StudentsClient({ initialStudents }) {
         </table>
         {students.length === 0 && <p style={{ marginTop: '10px', color: '#777' }}>No hay estudiantes registrados.</p>}
       </div>
+      <ConfirmModal {...confirmConfig} />
     </div>
   );
 }

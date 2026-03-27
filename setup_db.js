@@ -1,5 +1,6 @@
-const fs = require('fs');
-const { Pool } = require('pg');
+import fs from 'fs';
+import pkg from 'pg';
+const { Pool } = pkg;
 
 const envFile = fs.readFileSync('.env.local', 'utf8');
 const dbUrlMatch = envFile.match(/DATABASE_URL="([^"]+)"/);

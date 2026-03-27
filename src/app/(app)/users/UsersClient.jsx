@@ -1,16 +1,37 @@
 'use client';
+import { useState } from 'react';
 import { deleteUser } from './actions';
+import ConfirmModal from '../ConfirmModal';
+import AlertModal from '../AlertModal';
 
 export default function UsersClient({ initialData }) {
-  const handleDelete = async (id) => {
-    try {
-      if (confirm('¿Eliminar usuario del sistema?')) {
-        await deleteUser(id);
-        window.location.reload(); 
-      }
-    } catch(err) {
-      alert('Error: No se puede eliminar el superadministrador principal.');
-    }
+  const [confirmConfig, setConfirmConfig] = useState({ isOpen: false });
+  const [alertConfig, setAlertConfig] = useState({ isOpen: false });
+
+  const handleDelete = (id) => {
+    setConfirmConfig({
+      isOpen: true,
+      title: 'Eliminar Usuario',
+      message: '¿Eliminar usuario del sistema? Esta acción es irreversible.',
+      isDanger: true,
+      confirmText: 'Sí, eliminar',
+      onConfirm: async () => {
+        setConfirmConfig({ isOpen: false });
+        try {
+          await deleteUser(id);
+          window.location.reload(); 
+        } catch(err) {
+          setAlertConfig({
+            isOpen: true,
+            title: 'Acción Denegada',
+            message: 'Error: No se puede eliminar el superadministrador principal.',
+            isDanger: true,
+            onOk: () => setAlertConfig({ isOpen: false })
+          });
+        }
+      },
+      onCancel: () => setConfirmConfig({ isOpen: false })
+    });
   };
 
   return (
@@ -41,6 +62,8 @@ export default function UsersClient({ initialData }) {
           ))}
         </tbody>
       </table>
+      <ConfirmModal {...confirmConfig} />
+      <AlertModal {...alertConfig} />
     </div>
   );
 }

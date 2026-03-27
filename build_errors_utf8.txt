@@ -1,0 +1,66 @@
+﻿Ôû▓ Next.js 16.2.1 (Turbopack)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+node.exe : 
+En línea: 1 Carácter: 1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~
+    + CategoryInfo           
+   : NotSpecified: (:String  
+  ) [], RemoteException
+    + FullyQualifiedErrorId  
+   : NativeCommandError
+ 
+> Build error occurred
+Error: Turbopack build 
+failed with 2 errors:
+./src/app
+Module not found: Can't 
+resolve './css/style.css'
+server relative imports are 
+not implemented yet. Please 
+try an import relative to 
+the file you are importing 
+from.
+
+
+https://nextjs.org/docs/messa
+ges/module-not-found
+
+
+./src/app/globals.css:1:1
+Module not found: Can't 
+resolve '/css/style.css'
+[31m[1m>[0m [90m1 |[0m 
+@[36mimport[0m url([32m'/c
+ss/style.css'[0m);
+  [90m  |[0m [31m[1m^[0m
+  [90m2 |[0m
+
+
+
+Import trace:
+  Client Component Browser:
+    ./src/app/globals.css 
+[Client Component Browser]
+    ./src/app/layout.js 
+[Server Component]
+
+https://nextjs.org/docs/messa
+ges/module-not-found
+
+
+    at <unknown> (https://nex
+tjs.org/docs/messages/module-
+not-found)
+    at <unknown> 
+(./src/app/globals.css:1:1)
+    at <unknown> (https://nex
+tjs.org/docs/messages/module-
+not-found)

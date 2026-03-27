@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { saveStudent, searchStudentByDni } from '../actions';
 import { getDepartamentos, getProvinciasByDeptId, getDistritosByProvId } from '@/lib/ubigeo';
 
 export default function CreateStudentClient() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [formData, setFormData] = useState({
     id: '', dni: '', apellido_paterno: '', apellido_materno: '', nombres: '', 
     fecha_nacimiento: '', departamento_nacimiento: '', provincia_nacimiento: '', distrito_nacimiento: '', 
@@ -27,6 +28,16 @@ export default function CreateStudentClient() {
   useEffect(() => {
     getDepartamentos().then(setDepartamentos);
   }, []);
+
+  useEffect(() => {
+    const defaultDni = searchParams.get('dni');
+    if (defaultDni) {
+      setFormData(prev => ({ ...prev, dni: defaultDni }));
+      searchStudentByDni(defaultDni).then(student => {
+        if (student) handleSelectSuggestion(student);
+      });
+    }
+  }, [searchParams, departamentos]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

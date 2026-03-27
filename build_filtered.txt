@@ -1,0 +1,29 @@
+﻿
+> Build error occurred
+Error: Turbopack build 
+failed with 2 errors:
+Module not found: Can't 
+resolve './css/style.css'
+server relative imports are 
+not implemented yet. Please 
+try an import relative to 
+the file you are importing 
+from.
+https://nextjs.org/docs/messa
+ges/module-not-found
+Module not found: Can't 
+resolve '/css/style.css'
+[31m[1m>[0m [90m1 |[0m 
+@[36mimport[0m url([32m'/c
+ss/style.css'[0m);
+Import trace:
+https://nextjs.org/docs/messa
+ges/module-not-found
+    at <unknown> (https://nex
+tjs.org/docs/messages/module-
+not-found)
+    at <unknown> (https://nex
+tjs.org/docs/messages/module-
+not-found)
+
+

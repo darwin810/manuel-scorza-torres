@@ -4,7 +4,10 @@ export const metadata = {
   title: 'Login - I.E. Manuel Scorza',
 };
 
-export default function LoginPage() {
+export default async function LoginPage({ searchParams }) {
+  const params = await searchParams;
+  const error = params?.error;
+
   return (
     <div className="auth-wrapper">
       <div className="auth-card">
@@ -15,6 +18,17 @@ export default function LoginPage() {
         </div>
         <h2>Bienvenido de Nuevo</h2>
         <p>Ingresa tus credenciales para acceder al sistema.</p>
+
+        {error === 'InvalidCredentials' && (
+          <div style={{ backgroundColor: '#fee2e2', color: '#b91c1c', padding: '0.75rem', borderRadius: '4px', marginBottom: '1rem', textAlign: 'center' }}>
+            Usuario o contraseña incorrectos.
+          </div>
+        )}
+        {error === 'ServerError' && (
+          <div style={{ backgroundColor: '#fef3c7', color: '#b45309', padding: '0.75rem', borderRadius: '4px', marginBottom: '1rem', textAlign: 'center' }}>
+            Error interno. Verifica variables de entorno en Vercel.
+          </div>
+        )}
 
         <form action="/api/auth/login" method="POST">
           <div className="form-group">

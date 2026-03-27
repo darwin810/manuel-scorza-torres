@@ -1,0 +1,20 @@
+﻿
+(node:24600) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of 
+file:///C:/Users/MI%20PC/asistencia_scorza/next.config.js is not specified and it doesn't parse as CommonJS.
+To eliminate this warning, add "type": "module" to C:\Users\MI PC\asistencia_scorza\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:26056) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of 
+file:///C:/Users/MI%20PC/asistencia_scorza/next.config.js is not specified and it doesn't parse as CommonJS.
+To eliminate this warning, add "type": "module" to C:\Users\MI PC\asistencia_scorza\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28376) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of 
+file:///C:/Users/MI%20PC/asistencia_scorza/next.config.js is not specified and it doesn't parse as CommonJS.
+To eliminate this warning, add "type": "module" to C:\Users\MI PC\asistencia_scorza\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:22264) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of 
+file:///C:/Users/MI%20PC/asistencia_scorza/next.config.js is not specified and it doesn't parse as CommonJS.
+To eliminate this warning, add "type": "module" to C:\Users\MI PC\asistencia_scorza\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ Ô£ô Compiled successfully
+
+

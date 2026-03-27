@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { cookies } from 'next/headers';
 
 async function getUser() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const token = cookieStore.get('auth_token')?.value;
   if (!token) return null;
   try {
@@ -282,11 +282,11 @@ export default async function HomePage() {
           <span>I.E. MANUEL SCORZA</span>
         </div>
         <div className="nav-links">
-          <Link href="#">Inicio</Link>
-          <Link href="#">Comunidad</Link>
-          <Link href="#">Académico</Link>
-          <Link href="#">Inscripción</Link>
-          <Link href="#">Contacto</Link>
+          <a href="#inicio">Inicio</a>
+          <a href="#comunidad">Comunidad</a>
+          <a href="#academico">Académico</a>
+          <Link href="/login">Inscripción</Link>
+          <a href="#contacto">Contacto</a>
         </div>
         <div className="nav-actions">
           {user ? (
@@ -297,19 +297,18 @@ export default async function HomePage() {
         </div>
       </nav>
 
-      {/* Main Hero */}
-      <section className="hero">
+      <section className="hero" id="inicio">
         <i className='bx bxs-book-reader hero-bg-icon'></i>
         <div className="hero-content">
-          <span style={{ fontWeight: '600', fontSize: '1rem', letterSpacing: '1px', color: 'var(--secondary)', marginBottom: '1rem', display: 'block' }}>EDUCACIÓN CERCANA A TI</span>
-          <h1>Caminos personalizados hacia el éxito.</h1>
-          <p>Descubre un modelo de enseñanza adaptativo y profundo. Brindamos una alternativa equitativa e integral desde Inicial hasta Secundaria para asegurar que tu hijo logre el éxito tanto dentro como fuera de las aulas.</p>
-          <Link href="#" className="btn-primary-alt">Descubrir más información</Link>
+          <span style={{ fontWeight: '600', fontSize: '1rem', letterSpacing: '1px', color: '#ffbd59', marginBottom: '1rem', display: 'block' }}>EDUCACIÓN CERCANA A TI</span>
+          <h1 style={{ color: '#FDE047', textShadow: '2px 2px 8px rgba(0,0,0,0.8)' }}>Caminos personalizados hacia el éxito.</h1>
+          <p style={{ fontWeight: '500', color: '#ffffff', textShadow: '1px 1px 3px rgba(0,0,0,0.5)' }}>Descubre un modelo de enseñanza adaptativo y profundo. Brindamos una alternativa equitativa e integral desde Inicial hasta Secundaria para asegurar que tu hijo logre el éxito tanto dentro como fuera de las aulas.</p>
+          <a href="#academico" className="btn-primary-alt">Descubrir más información</a>
         </div>
       </section>
 
       {/* First Academic Level Highlight */}
-      <section className="section-dark">
+      <section className="section-dark" id="academico">
         <div style={{ maxWidth: '800px', margin: '0 auto 4rem' }}>
           <p style={{ fontWeight: '600', fontSize: '0.9rem', letterSpacing: '1px', marginBottom: '0.5rem', color: '#94a3b8' }}>NIVELES DE ENSEÑANZA COMPLETA</p>
           <h2>Al servicio de los estudiantes desde 2004</h2>
@@ -321,19 +320,19 @@ export default async function HomePage() {
             <i className='bx bx-pencil'></i>
             <h3>Nivel Primaria</h3>
             <p>Nuestra malla curricular fomenta la resiliencia en los más pequeños, enseñando empatía y curiosidad. Contamos con áreas interactivas para una formación cálida.</p>
-            <Link href="#" className="btn-outline">SABER MÁS</Link>
+            <a href="#cualidades" className="btn-outline">SABER MÁS</a>
           </div>
           <div className="card-alt">
             <i className='bx bxs-graduation'></i>
             <h3>Nivel Secundaria</h3>
             <p>Acompañamos a los adolescentes preparándolos para afrontar desafíos reales, potenciando su liderazgo en un entorno inclusivo y enriquecedor.</p>
-            <Link href="#" className="btn-outline">SABER MÁS</Link>
+            <a href="#cualidades" className="btn-outline">SABER MÁS</a>
           </div>
         </div>
       </section>
 
       {/* Mid Infographic Section */}
-      <section className="section-stats">
+      <section className="section-stats" id="comunidad">
         <div className="stats-container">
           <div className="stat-box">
             <i className='bx bx-calendar-star' style={{ fontSize: '3rem', color: 'var(--secondary)', marginBottom: '1rem' }}></i>
@@ -349,7 +348,7 @@ export default async function HomePage() {
       </section>
 
       {/* Testimonies / Qualities */}
-      <section className="section-light">
+      <section className="section-light" id="cualidades">
         <h2 style={{ fontSize: '2.5rem', color: 'var(--primary)', marginBottom: '1rem' }}>Nuestras diferencias únicas</h2>
         <p style={{ maxWidth: '800px', margin: '0 auto 4rem', color: '#4b5563', fontSize: '1.1rem' }}>La opinión de nuestros expertos y el respaldo de las familias nos posiciona como un bastión escolar integral.</p>
         <div className="features">
@@ -378,7 +377,7 @@ export default async function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="footer">
+      <footer className="footer" id="contacto">
         <div className="footer-content mb-4" style={{ marginBottom: '2rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '2rem' }}>
           <div className="nav-brand" style={{ color: 'white', flexDirection: 'column', alignItems: 'flex-start', gap: '5px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -388,10 +387,10 @@ export default async function HomePage() {
             <span className="text-muted" style={{ fontSize: '0.85rem', paddingLeft: '2.2rem', display: 'block' }}>Educando ciudadanos para un futuro mejor.</span>
           </div>
           <div className="footer-links">
-            <Link href="#">Aviso de privacidad</Link>
-            <Link href="#">Términos y condiciones</Link>
-            <Link href="#">Reglamento int.</Link>
-            <Link href="#">Blog</Link>
+            <Link href="/">Aviso de privacidad</Link>
+            <Link href="/">Términos y condiciones</Link>
+            <Link href="/">Reglamento int.</Link>
+            <Link href="/">Blog</Link>
           </div>
         </div>
         <div style={{ textAlign: 'center', color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem' }}>

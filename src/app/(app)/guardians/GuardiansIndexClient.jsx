@@ -3,10 +3,12 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { fetchGuardiansData, deleteGuardian } from './actions';
+import ConfirmModal from '../ConfirmModal';
 
 export default function GuardiansIndexClient() {
   const [data, setData] = useState({ data: [], total: 0, from: 0, to: 0, last_page: 1, links: [] });
   const [loading, setLoading] = useState(true);
+  const [confirmConfig, setConfirmConfig] = useState({ isOpen: false });
   const [filters, setFilters] = useState({ search: '', page: 1 });
 
   useEffect(() => {
@@ -31,11 +33,20 @@ export default function GuardiansIndexClient() {
     setFilters(prev => ({ ...prev, page }));
   };
 
-  const handleDelete = async (id) => {
-    if (confirm('¿Eliminar apoderado permanentemente? Se desvinculará de sus estudiantes.')) {
-      await deleteGuardian(id);
-      loadData(filters);
-    }
+  const handleDelete = (id) => {
+    setConfirmConfig({
+      isOpen: true,
+      title: 'Eliminar Apoderado',
+      message: '¿Eliminar apoderado permanentemente? Se desvinculará de sus estudiantes.',
+      isDanger: true,
+      confirmText: 'Sí, eliminar',
+      onConfirm: async () => {
+        setConfirmConfig({ isOpen: false });
+        await deleteGuardian(id);
+        loadData(filters);
+      },
+      onCancel: () => setConfirmConfig({ isOpen: false })
+    });
   };
 
   return (
@@ -138,6 +149,7 @@ export default function GuardiansIndexClient() {
           </div>
         </div>
       )}
+      <ConfirmModal {...confirmConfig} />
     </div>
   );
 }
